@@ -3,5 +3,10 @@
   "version": "1.0.0",
   "main": "app.js",
   "repository": "https://github.com/APIExplore/api-explore-agent.git",
-  "license": "MIT"
+  "license": "MIT",
+  "scripts": {
+    "start": "echo start",
+    "test": "echo test",
+    "build": "echo build"
+  },
 }
