@@ -8,5 +8,5 @@
     "start": "echo start",
     "test": "echo test",
     "build": "echo build"
-  },
+  }
 }
