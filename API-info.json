@@ -1,0 +1,18 @@
+{
+	"apiList": [
+		{
+			"id": 1,
+			"name": "Features Service",
+			"jarFileName": "features-service-sut.jar",
+			"startCommand": "java -jar {{FILE_PATH}}",
+			"stopCommand": "pkill -f {{FILE_PATH}}"
+		},
+		{
+			"id": 2,
+			"name": "API2",
+			"jarFileName": "api2.jar",
+			"startCommand": "java -jar api2.jar",
+			"stopCommand": "pkill -f api2.jar"
+		}
+	]
+}
