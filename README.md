@@ -23,3 +23,7 @@ Example: To start the feature-service API, `http://localhost:3000/api/start-api/
 ### Stop an API
 
 To stop an API, get the API id To start an API, obtain the API id from the `API-info.json` file and send a `GET` request to `<HOST>:<PORT>/api/start-api/<API_ID>`
+
+### Restart an API
+
+To restart an API, first make sure the API you want to restart should be started already, then send a `GET` request to `<HOST>:<PORT>/api/restart-api/<API_ID>`.

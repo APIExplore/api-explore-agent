@@ -71,35 +71,29 @@ router.get('/restart-api/:id', (req, res) => {
 	}
 
 	const jarFilePath = path.join(__dirname, '../compiled', sutApi.jarFileName);
-
-	console.log('JJJ', jarFilePath);
-	const checkCommand = `pgrep -f "${jarFilePath}"`;
-	const result = execSync(checkCommand, { encoding: 'utf-8' });
-
-	if (result.trim() === '') {
-		return res.status(500).send('API is not currently running');
-	}
-
 	const command = sutApi.restartCommand.replace(
 		new RegExp('{{FILE_PATH}}', 'g'),
 		jarFilePath
 	);
 
-	if (!fs.existsSync(jarFilePath)) {
-		console.error(`Error: JAR file not found at ${jarFilePath}`);
-		return res.status(404).send('JAR file not found');
-	}
+	const child = spawn(command, { shell: true });
 
-	exec(command, (error, stdout, stderr) => {
-		if (error) {
-			console.error(`Error executing command: ${error.message}`);
-			return res.status(500).send('Internal Server Error');
-		}
+	child.stdout.on('data', (data) => {
+		console.log(`stdout: ${data}`);
+	});
 
-		console.log(`Command output: ${stdout}`);
-		console.error(`Command error: ${stderr}`);
+	res.send('API Restarted Successfully!!!');
 
-		res.send('API started successfully');
+	child.stderr.on('data', (data) => {
+		console.log(`stderr: ${data}`);
+	});
+
+	child.on('error', (error) => console.log(`error: ${error.message}`));
+
+	child.on('exit', (code, signal) => {
+		if (code) console.log(`Process exit with code: ${code}`);
+		if (signal) console.log(`Process killed with signal: ${signal}`);
+		console.log(`Done ✅`);
 	});
 });
 
