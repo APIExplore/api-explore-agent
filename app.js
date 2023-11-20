@@ -6,6 +6,10 @@ const port = 3000;
 
 app.use('/api', apiRoutes);
 
+app.get('', (_, res) => {
+	res.send('Welcome to the SUT agent App.');
+});
+
 app.listen(port, () => {
-	console.log(`Example app listening on port ${port}`);
+	console.log(`Agent app listening on port ${port}`);
 });
