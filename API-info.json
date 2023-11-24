@@ -5,8 +5,8 @@
 			"name": "Features Service",
 			"jarFileName": "features-service-sut.jar",
 			"startCommand": "java -jar {{FILE_PATH}}",
-			"stopCommand": "pkill -f {{FILE_PATH}}",
-			"restartCommand": "pkill -f {{FILE_PATH}} && java -jar {{FILE_PATH}}"
+			"stopCommand": "kill {{PID}}",
+			"restartCommand": "kill {{PID}} && java -jar {{FILE_PATH}}"
 		}
 	]
 }
