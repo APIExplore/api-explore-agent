@@ -1,12 +1,15 @@
+const express = require('express');
+const apiRoutes = require('./routes/apiRoutes');
 
-const express = require('express')
-const app = express()
-const port = 3000
+const app = express();
+const port = 3000;
+app.use(express.json());
+app.use('/api', apiRoutes);
 
-app.get('/', (req, res) => {
-    res.send('Welcome to api explore agent!')
-})
+app.get('', (_, res) => {
+	res.send('Welcome to the SUT agent App.');
+});
 
 app.listen(port, () => {
-    console.log(`Example app listening on port ${port}`)
-})
+	console.log(`Agent app listening on port ${port}`);
+});
