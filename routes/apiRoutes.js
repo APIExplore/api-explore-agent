@@ -26,7 +26,7 @@ router.get('/start-api/:id', (req, res) => {
 		console.log(`stdout: ${data}`);
 	});
 
-	res.send(`API Started Successfully!!! Process ID: ${child.pid}`);
+	res.send({ message: 'API Started Successfully!!!', PID: `${child.pid}` });
 
 	child.stderr.on('data', (data) => {
 		console.log(`stderr: ${data}`);
@@ -79,7 +79,7 @@ router.post('/restart-api', (req, res) => {
 		console.log(`stdout: ${data}`);
 	});
 
-	res.send(`API Restarted Successfully!!! Process ID: ${child.pid}`);
+	res.send({ message: 'API Restarted Successfully!!!', PID: `${child.pid}` });
 
 	child.stderr.on('data', (data) => {
 		console.log(`stderr: ${data}`);
