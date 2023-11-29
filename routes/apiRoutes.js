@@ -30,9 +30,14 @@ router.get('/start-api/:id', (req, res) => {
 
 	child.stdout.on('data', (data) => {
 		console.log(`stdout: ${data}`);
-	});
 
-	res.send({ message: 'API Started Successfully!!!', PID: `${child.pid}` });
+		if (data.toString().includes('Started Application')) {
+			res.send({
+				message: 'API Started Successfully!!!',
+				PID: `${child.pid}`,
+			});
+		}
+	});
 
 	child.stderr.on('data', (data) => {
 		console.log(`stderr: ${data}`);
@@ -79,13 +84,16 @@ router.post('/restart-api', (req, res) => {
 		.replace('{{FILE_PATH}}', jarFilePath);
 
 	const child = spawn(command, { shell: true });
-	console.log('Child process id', child.pid);
 
 	child.stdout.on('data', (data) => {
-		console.log(`stdout: ${data}`);
+		if (data.toString().includes('Started Application')) {
+			console.log('Child process id', child.pid);
+			res.send({
+				message: 'API Restarted Successfully!!!',
+				PID: `${child.pid}`,
+			});
+		}
 	});
-
-	res.send({ message: 'API Restarted Successfully!!!', PID: `${child.pid}` });
 
 	child.stderr.on('data', (data) => {
 		console.log(`stderr: ${data}`);
