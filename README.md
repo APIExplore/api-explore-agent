@@ -14,6 +14,10 @@ Install dependencies by running `yarn install`
 
 ## Endpoints
 
+### Fetch Available APIs
+
+To fetch the available APIs from the `API-info.json` file, send a `GET` request to `<HOST>:<PORT>/api`. The route returns the `id`and `name`of the APIs.
+
 ### Start an API
 
 To start an API, get the API id from the `API-info.json` file and send a `GET` request to `<HOST>:<PORT>/api/start-api/<API_ID>`
