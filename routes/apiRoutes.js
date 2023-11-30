@@ -7,6 +7,12 @@ const path = require('path');
 
 const apiInfo = require('../API-info.json');
 
+router.get('/', (_, res) => {
+	const apiList = apiInfo.apiList;
+	const result = apiList.map((api) => ({ id: api.id, name: api.name }));
+	res.json(result);
+});
+
 router.get('/start-api/:id', (req, res) => {
 	const apiId = parseInt(req.params.id, 10);
 	const sutApi = apiInfo.apiList.find((api) => api.id === apiId);
