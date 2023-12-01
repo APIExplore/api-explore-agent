@@ -31,7 +31,7 @@ router.get('/start-api/:id', (req, res) => {
 	child.stdout.on('data', (data) => {
 		console.log(`stdout: ${data}`);
 
-		if (data.toString().includes('Started Application')) {
+		if (data.toString().includes(sutApi.onStartPhrase)) {
 			res.send({
 				message: 'API Started Successfully!!!',
 				PID: `${child.pid}`,
@@ -87,7 +87,7 @@ router.post('/restart-api', (req, res) => {
 
 	child.stdout.on('data', (data) => {
 		console.log(`stdout: ${data}`);
-		if (data.toString().includes('Started Application')) {
+		if (data.toString().includes(sutApi.onStartPhrase)) {
 			console.log('Child process id', child.pid + 1);
 			res.send({
 				message: 'API Restarted Successfully!!!',
