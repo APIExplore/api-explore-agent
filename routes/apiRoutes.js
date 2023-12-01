@@ -86,11 +86,12 @@ router.post('/restart-api', (req, res) => {
 	const child = spawn(command, { shell: true });
 
 	child.stdout.on('data', (data) => {
+		console.log(`stdout: ${data}`);
 		if (data.toString().includes('Started Application')) {
-			console.log('Child process id', child.pid);
+			console.log('Child process id', child.pid + 1);
 			res.send({
 				message: 'API Restarted Successfully!!!',
-				PID: `${child.pid}`,
+				PID: `${child.pid + 1}`,
 			});
 		}
 	});
