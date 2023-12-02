@@ -7,24 +7,7 @@ const path = require('path');
 
 const apiInfo = require('../API-info.json');
 
-<<<<<<< HEAD
-router.get('/', (_, res) => {
-	const apiList = apiInfo.apiList;
-	const result = apiList.map((api) => ({ id: api.id, name: api.name }));
-	res.json(result);
-});
-
-router.get('/start-api/:id', (req, res) => {
-	const apiId = parseInt(req.params.id, 10);
-	const sutApi = apiInfo.apiList.find((api) => api.id === apiId);
-
-	if (!sutApi) {
-		return res.status(404).send('API not found');
-	}
-
-=======
 async function startSut(responseMsg, res, sutApi) {
->>>>>>> 6a7c468 ( feat: #7On SUT start, wait until SUT is ready before sending response)
 	const jarFilePath = path.join(__dirname, '../compiled', sutApi.jarFileName);
 	const command = sutApi.startCommand.replace('{{FILE_PATH}}', jarFilePath);
 	const splitted_command = command.split(' ');
@@ -55,6 +38,12 @@ async function startSut(responseMsg, res, sutApi) {
 		console.log(`Done ✅`);
 	});
 }
+
+router.get('/', (_, res) => {
+	const apiList = apiInfo.apiList;
+	const result = apiList.map((api) => ({ id: api.id, name: api.name }));
+	res.json(result);
+});
 
 router.get('/start-api/:id', async function (req, res) {
 	const apiId = parseInt(req.params.id, 10);
