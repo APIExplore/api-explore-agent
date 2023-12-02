@@ -7,6 +7,7 @@ const path = require('path');
 
 const apiInfo = require('../API-info.json');
 
+<<<<<<< HEAD
 router.get('/', (_, res) => {
 	const apiList = apiInfo.apiList;
 	const result = apiList.map((api) => ({ id: api.id, name: api.name }));
@@ -21,6 +22,9 @@ router.get('/start-api/:id', (req, res) => {
 		return res.status(404).send('API not found');
 	}
 
+=======
+async function startSut(responseMsg, res, sutApi) {
+>>>>>>> 6a7c468 ( feat: #7On SUT start, wait until SUT is ready before sending response)
 	const jarFilePath = path.join(__dirname, '../compiled', sutApi.jarFileName);
 	const command = sutApi.startCommand.replace('{{FILE_PATH}}', jarFilePath);
 	const splitted_command = command.split(' ');
@@ -33,7 +37,7 @@ router.get('/start-api/:id', (req, res) => {
 
 		if (data.toString().includes(sutApi.onStartPhrase)) {
 			res.send({
-				message: 'API Started Successfully!!!',
+				message: responseMsg,
 				PID: `${child.pid}`,
 			});
 		}
@@ -50,6 +54,17 @@ router.get('/start-api/:id', (req, res) => {
 		if (signal) console.log(`Process killed with signal: ${signal}`);
 		console.log(`Done ✅`);
 	});
+}
+
+router.get('/start-api/:id', async function (req, res) {
+	const apiId = parseInt(req.params.id, 10);
+	const sutApi = apiInfo.apiList.find((api) => api.id === apiId);
+
+	if (!sutApi) {
+		return res.status(404).send('API not found');
+	}
+
+	return await startSut('API Started Successfully!!!', res, sutApi);
 });
 
 router.post('/stop-api', (req, res) => {
@@ -78,34 +93,17 @@ router.post('/restart-api', (req, res) => {
 		return res.status(404).send('API not found');
 	}
 
-	const jarFilePath = path.join(__dirname, '../compiled', sutApi.jarFileName);
-	const command = sutApi.restartCommand
-		.replace('{{PID}}', parseInt(pid, 10))
-		.replace('{{FILE_PATH}}', jarFilePath);
+	const stopCommand = sutApi.stopCommand.replace(
+		'{{PID}}',
+		parseInt(pid, 10)
+	);
 
-	const child = spawn(command, { shell: true });
-
-	child.stdout.on('data', (data) => {
-		console.log(`stdout: ${data}`);
-		if (data.toString().includes(sutApi.onStartPhrase)) {
-			console.log('Child process id', child.pid + 1);
-			res.send({
-				message: 'API Restarted Successfully!!!',
-				PID: `${child.pid + 1}`,
-			});
+	exec(stopCommand, async function (error, stdout, stderr) {
+		if (error) {
+			console.error(`Error executing command: ${error.message}`);
+			return res.status(500).send('Internal Server Error');
 		}
-	});
-
-	child.stderr.on('data', (data) => {
-		console.log(`stderr: ${data}`);
-	});
-
-	child.on('error', (error) => console.log(`error: ${error.message}`));
-
-	child.on('exit', (code, signal) => {
-		if (code) console.log(`Process exit with code: ${code}`);
-		if (signal) console.log(`Process killed with signal: ${signal}`);
-		console.log(`Done ✅`);
+		return await startSut('API Restarted Successfully!!!', res, sutApi);
 	});
 });
 
