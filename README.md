@@ -24,7 +24,7 @@ To start an API, get the API id from the `API-info.json` file and send a `GET` r
 
 **NOTE!!! - Save the PID from the Response to use it for Stop and Restart**
 
-Example: To start the feature-service API, `http://localhost:3000/api/start-api/1` can be used.
+Example: To start the feature-service API, `http://localhost:3030/api/start-api/1` can be used.
 
 ### Stop an API
 
